@@ -1,4 +1,5 @@
 const pool = require("../db");
+const jwt = require("jsonwebtoken");
 
 async function authLogin(req, res) {
   const { email, password } = req.body;
@@ -20,10 +21,20 @@ async function authLogin(req, res) {
         .status(401)
         .json({ error: "Invalid email or password", authenticated: false });
     }
-
+    
+    const token = jwt.sign(
+      { id: user.id, email: user.email },
+      process.env.JWT_SECRET_KEY,
+      { expiresIn: "30d" }
+    );
     return res.status(200).json({
       message: "Login Sucessful",
-      user: { id: user.id, email: user.email, username: user.username },
+      token: token,
+      user: {
+        id: user.id,
+        email: user.email,
+        username: user.username,
+      },
       authenticated: true,
     });
   } catch (error) {
@@ -49,7 +60,7 @@ async function authSignUp(req, res) {
     );
 
     return res
-      .status(200)
+      .status(201)
       .json({ message: "New User Created", userCreated: true });
   } catch (error) {
     console.error(error);

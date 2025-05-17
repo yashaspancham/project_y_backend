@@ -1,5 +1,5 @@
 -- roughly the querys  used while seting up the databse
-
+--GRANT querys are run as pstrges user
 --creds used are not the same
 CREATE DATABASE mydb;
 CREATE USER myuser WITH PASSWORD 'mypassword';
@@ -19,3 +19,4 @@ CREATE TABLE users (
   password TEXT NOT NULL
 );
 
+GRANT REFERENCES ON TABLE users TO projectyuser;

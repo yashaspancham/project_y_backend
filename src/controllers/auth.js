@@ -68,4 +68,5 @@ async function authSignUp(req, res) {
   }
 }
 
+
 module.exports = { authLogin, authSignUp };

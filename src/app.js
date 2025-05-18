@@ -8,8 +8,8 @@ const entries =require("./routes/entries");
 app.use(express.json());
 app.use(cors());
 
-app.use("/",authLogin);
-app.use("/entries",entries);
+app.use("/api/auth/",authLogin);
+app.use("/api/entries",entries);
 
 
 app.listen(process.env.SERVER_PORT,()=>{

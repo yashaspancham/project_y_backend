@@ -4,8 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "devStart": "nodemon index.js"
+    "clean": "rm -rf dist",
+    "copy-src": "cpy src/**/* --cwd=src --parents --dest=dist/src",
+    "copy-root": "cpy create_querys.sql package.json package-lock.json .env --dest=dist",
+    "build": "npm-run-all clean copy-src copy-root",
+    "start": "NODE_ENV=production node dist/src/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
@@ -18,5 +22,9 @@
     "jsonwebtoken": "^9.0.2",
     "nodemon": "^3.1.10",
     "pg": "^8.16.0"
+  },
+  "devDependencies": {
+    "cpy-cli": "^5.0.0",
+    "npm-run-all": "^4.1.5"
   }
 }

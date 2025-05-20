@@ -12,6 +12,6 @@ app.use("/api/auth/",authLogin);
 app.use("/api/entries",entries);
 
 
-app.listen(process.env.SERVER_PORT,()=>{
+app.listen(process.env.SERVER_PORT,"0.0.0.0",()=>{
   console.log(`Server running at http://localhost:${process.env.SERVER_PORT}`);
 });

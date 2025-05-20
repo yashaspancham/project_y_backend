@@ -33,3 +33,21 @@ dist/
 build/
 
 # Coverage directory
+coverage/
+
+# TypeScript (if used later)
+*.tsbuildinfo
+
+# PM2 process file and logs
+.pm2/
+
+# Database dumps (optional)
+*.sql
+
+# Optional: backup files
+*.bak
+*.swp
+*~
+
+# Optional: test snapshots
+__snapshots__/

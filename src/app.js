@@ -11,6 +11,10 @@ app.use(cors());
 app.use("/api/auth/",authLogin);
 app.use("/api/entries",entries);
 
+app.get('/', (req, res) => {
+  res.send('Hello from Express!');
+});
+
 
 app.listen(process.env.SERVER_PORT,"0.0.0.0",()=>{
   console.log(`Server running at http://localhost:${process.env.SERVER_PORT}`);

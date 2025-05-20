@@ -3,14 +3,13 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {
-    "clean": "rm -rf dist",
-    "copy-src": "cpy src/**/* --cwd=src --parents --dest=dist/src",
-    "copy-root": "cpy create_querys.sql package.json package-lock.json .env --dest=dist",
-    "build": "npm-run-all clean copy-src copy-root",
-    "start": "NODE_ENV=production node dist/src/app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+"scripts": {
+  "clean": "rm -rf dist",
+  "copy-src": "cpy '**/*' --cwd=src --parents --dest=dist/src",
+  "build": "npm-run-all clean copy-src",
+  "start": "NODE_ENV=production node dist/src/app.js",
+  "test": "echo \"Error: no test specified\" && exit 1"
+},
   "keywords": [],
   "author": "",
   "license": "ISC",

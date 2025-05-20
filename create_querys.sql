@@ -5,11 +5,14 @@ CREATE DATABASE mydb;
 CREATE USER myuser WITH PASSWORD 'mypassword';
 GRANT ALL PRIVILEGES ON DATABASE mydb TO myuser;
 
+
+GRANT CREATE ON SCHEMA public TO myuser;
 GRANT ALL ON SCHEMA public TO myuser;
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE users TO myuser;
+GRANT USAGE, SELECT ON SEQUENCE users_id_seq TO myyuser;
+GRANT REFERENCES ON TABLE users TO myuser;
 
-GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE users TO projectyuser;
 
-GRANT USAGE, SELECT ON SEQUENCE users_id_seq TO projectyuser;
 
 
 CREATE TABLE users (
@@ -19,4 +22,12 @@ CREATE TABLE users (
   password TEXT NOT NULL
 );
 
-GRANT REFERENCES ON TABLE users TO projectyuser;
+
+CREATE TABLE entries (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  title TEXT NOT NULL,
+  content TEXT,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+

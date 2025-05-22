@@ -1,0 +1,44 @@
+name: Deploy Express.js Backend
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Add .env file
+        run: |
+          echo "${{ secrets.DB_USER }}" > .env
+          echo "${{ secrets.DB_PASSWORD }}" > .env
+          echo "${{ secrets.DB_NAME }}" > .env
+          echo "${{ secrets.DB_HOST }}" > .env
+          echo "${{ secrets.DB_PORT }}" > .env
+          echo "${{ secrets.JWT_SECRET_KEY }}" > .env
+          echo "${{ secrets.SERVER_PORT }}" > .env
+          echo "${{ secrets.NODE_ENV }}" > .env
+          cat .env
+      - name: Restart backend on EC2
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            cd ${{ secrets.SERVER_DIR }}
+            git pull
+            npm install --omit=dev
+            pm2 restart app || pm2 start src/app.js --name app

@@ -1,18 +1,29 @@
 const pool = require("../db");
 
 async function addEntry(req, res) {
-    console.log("here will be entires");
-    const { user_id, title, content } = req.body;
+    const { title, content } = req.body;
+    const { user_id } = req.params;
+
     console.log("Adding entry for user:", user_id);
+
+    const parsedUserId = Number(user_id);
+    if (isNaN(parsedUserId)) {
+        return res.status(400).json({ error: "Invalid user ID" });
+    }
+
     try {
-        await pool.query("INSERT INTO entries (user_id, title, content) VALUES ($1,$2,$3)", [user_id, title, content]);
-        console.log("Added entry for user:", user_id);
-        return res.status(201).json({ message: "EntryAdded" });
+        await pool.query(
+            "INSERT INTO entries (user_id, title, content) VALUES ($1, $2, $3)",
+            [parsedUserId, title, content]
+        );
+        console.log("Added entry for user:", parsedUserId);
+        return res.status(201).json({ message: "Entry added" });
     } catch (error) {
         console.error(error);
         return res.status(500).send("Server error");
     }
 }
+
 
 async function getEntryByID(req, res) {
     const { entry_id } = req.params;
@@ -32,7 +43,7 @@ async function getEntriesByUser(req, res) {
     const { user_id } = req.params;
     try {
         const resutl = await pool.query("SELECT * FROM entries WHERE user_id=$1", [user_id]);
-        return res.status(200).json({entries:resutl.rows})
+        return res.status(200).json({ entries: resutl.rows })
     } catch (error) {
         console.error(error)
         return res.status(500).send("server error");

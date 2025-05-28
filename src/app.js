@@ -8,8 +8,8 @@ const entries =require("./routes/entries");
 app.use(express.json());
 app.use(cors());
 
-app.use("/api/auth/",authLogin);
-app.use("/api/entries",entries);
+app.use("/auth/",authLogin);
+app.use("/entries",entries);
 
 app.get('/', (req, res) => {
   res.send('Hello from Express!');

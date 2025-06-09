@@ -5,6 +5,7 @@ require("dotenv").config();
 const authLogin = require("./routes/auth");
 const entries = require("./routes/entries");
 const authenticateToken = require("./middleware/auth");
+const UserRoutes=require("./routes/users");
 
 app.use(express.json());
 app.use(cors());
@@ -16,6 +17,7 @@ app.use((req, res, next) => {
 
 
 app.use("/auth", authLogin);
+app.use("/users",UserRoutes);
 app.use("/entries", entries);
 
 app.get('/', (req, res) => {

@@ -11,6 +11,7 @@ app.use(express.json());
 app.use(cors());
 
 app.use((req, res, next) => {
+  console.log("req.method, req.path: ",req.method, req.path);
   if (req.path === "/auth/login" || req.path === "/auth/signup") return next();
   authenticateToken(req, res, next);
 })

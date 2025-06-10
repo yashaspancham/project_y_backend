@@ -35,6 +35,39 @@ async function getLongestStreak(req, res) {
     }
 }
 
+async function getCurrentStreak(req, res) {
+    const { user_id } = req.params;
+    try {
+        const result = await pool.query(
+              `SELECT COUNT(*) AS current_streak
+             FROM (
+               SELECT date(created_at) AS entry_date
+               FROM entries
+               WHERE user_id = $1
+                 AND date(created_at) <= CURRENT_DATE
+               GROUP BY date(created_at)
+               ORDER BY entry_date DESC
+             ) dates
+             WHERE entry_date >= (
+               SELECT MAX(date(created_at)) - INTERVAL '1 day' * (ROW_NUMBER() OVER (ORDER BY MAX(date(created_at)) DESC) - 1)
+               FROM entries
+               WHERE user_id = $1
+                 AND date(created_at) <= CURRENT_DATE
+               GROUP BY date(created_at)
+               LIMIT 1
+             )`,
+            [user_id]
+        );
+        const currentStreak = (result.rows.length === 0) ? 0 : parseInt(result.rows[0].current_streak) || 0;
+        return res.status(200).json({
+            message: "Current streak retrieved successfully",
+            currentStreak
+        });
+    } catch (error) {
+        return res.status(500).json({ message: "server error" });
+    }
+}
+
 async function getTotalEntries(req, res) {
     const { user_id } = req.params;
     try {
@@ -53,4 +86,4 @@ async function getTotalEntries(req, res) {
 }
 
 
-module.exports = { getUserName, getLongestStreak,getTotalEntries };
+module.exports = { getUserName, getLongestStreak,getTotalEntries,getCurrentStreak };

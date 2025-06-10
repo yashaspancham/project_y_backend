@@ -18,6 +18,26 @@ async function getUserName(req, res) {
     }
 }
 
+async function changeUserName(req, res) {
+    const { user_id } = req.params;
+    const { username } = req.body;
+    try {
+        const result = await pool.query(
+            "UPDATE users SET username = $1 WHERE id = $2 RETURNING email, username",
+            [username, user_id]
+        );
+        if (result.rows.length === 0) {
+            return res.status(404).json({ message: "User is not found" });
+        }
+        return res.status(200).json({
+            message: "Username updated successfully",
+            user: result.rows[0]
+        });
+    } catch (error) {
+        return res.status(500).json({ message: "server error" });
+    }
+}
+
 async function getLongestStreak(req, res) {
     const { user_id } = req.params;
     try {
@@ -86,4 +106,4 @@ async function getTotalEntries(req, res) {
 }
 
 
-module.exports = { getUserName, getLongestStreak,getTotalEntries,getCurrentStreak };
+module.exports = { getUserName, getLongestStreak,getTotalEntries,getCurrentStreak,changeUserName };

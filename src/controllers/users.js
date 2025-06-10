@@ -35,4 +35,22 @@ async function getLongestStreak(req, res) {
     }
 }
 
-module.exports = { getUserName, getLongestStreak };
+async function getTotalEntries(req, res) {
+    const { user_id } = req.params;
+    try {
+        const result = await pool.query(
+            "SELECT COUNT(*) AS total_entries FROM entries WHERE user_id = $1",
+            [user_id]
+        );
+        const totalEntries = (result.rows.length === 0) ? 0 : parseInt(result.rows[0].total_entries) || 0;
+        return res.status(200).json({
+            message: "Total entries retrieved successfully",
+            totalEntries
+        });
+    } catch (error) {
+        return res.status(500).json({ message: "server error" });
+    }
+}
+
+
+module.exports = { getUserName, getLongestStreak,getTotalEntries };

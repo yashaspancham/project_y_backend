@@ -3,13 +3,13 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-"scripts": {
-  "clean": "rm -rf dist",
-  "copy-src": "cpy '**/*' --cwd=src --parents --dest=dist/src",
-  "build": "npm-run-all clean copy-src",
-  "start": "NODE_ENV=production node dist/src/app.js",
-  "test": "echo \"Error: no test specified\" && exit 1"
-},
+  "scripts": {
+    "clean": "rm -rf dist",
+    "copy-src": "cpy '**/*' --cwd=src --parents --dest=dist/src",
+    "build": "npm-run-all clean copy-src",
+    "start": "NODE_ENV=production node dist/src/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -20,7 +20,8 @@
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
     "nodemon": "^3.1.10",
-    "pg": "^8.16.0"
+    "pg": "^8.16.0",
+    "redis": "^5.5.6"
   },
   "devDependencies": {
     "cpy-cli": "^5.0.0",

@@ -12,7 +12,7 @@ Backend server for Project Y using Express.js and PostgreSQL.
 
 to run server
 
-`npm nodemon src/app.js`
+`npx nodemon src/app.js`
 
 
 project_y_backend/
